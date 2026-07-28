@@ -1,0 +1,499 @@
+<div class="employees-page">
+
+  <div class="page-header">
+
+    <div>
+      <h2>Fonctionnaires</h2>
+      <p>Gérer tous les fonctionnaires</p>
+    </div>
+
+    <button
+      class="btn btn-primary"
+      (click)="openAddModal()">
+
+      <i class="bi bi-plus-lg"></i>
+      Ajouter un Fonctionnaire
+
+    </button>
+
+  </div>
+
+  <div
+    class="table-card"
+    *ngIf="vm$ | async as vm">
+
+    <div class="table-header">
+
+      <div class="search-container">
+
+        <i class="bi bi-search"></i>
+
+        <input
+          class="form-control search-box"
+          type="text"
+          placeholder="Rechercher..."
+          [value]="searchTerm$.value"
+          (input)="onSearch($event)">
+
+      </div>
+
+    </div>
+
+    <table class="table table-hover align-middle">
+
+      <thead>
+
+        <tr>
+
+          <th>#</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Division</th>
+          <th>Poste</th>
+          <th>Grade</th>
+          <th>Date d'Embauche</th>
+          <th class="text-center">Actions</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let emp of vm.paginated">
+
+          <td>{{ emp.id }}</td>
+
+          <td>
+
+            {{ emp.firstName }}
+            {{ emp.lastName }}
+
+          </td>
+
+          <td>{{ emp.email }}</td>
+
+          <td>{{ emp.department?.name }}</td>
+
+          <td>{{ emp.position?.title }}</td>
+
+          <td>{{ emp.grade?.name }}</td>
+
+          <td>{{ emp.hireDate | date:'longDate' }}</td>
+
+          <td>
+
+            <div class="d-flex justify-content-end gap-2">
+
+              <button
+                class="action-btn btn-edit"
+                (click)="editEmployee(emp)">
+
+                <i class="bi bi-pencil"></i>
+
+              </button>
+
+              <button
+                class="action-btn btn-delete"
+                (click)="deleteEmployee(emp)">
+
+                <i class="bi bi-trash"></i>
+
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+        <tr *ngIf="vm.filtered.length === 0">
+
+          <td
+            colspan="8"
+            class="text-center text-muted py-4">
+
+            Aucun fonctionnaire trouvé.
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+    <div
+      class="table-footer"
+      *ngIf="vm.filtered.length > 0">
+
+      <div class="entries-info">
+
+        Affichage de
+        <strong>{{ vm.startEntry }}</strong>
+        à
+        <strong>{{ vm.endEntry }}</strong>
+        sur
+        <strong>{{ vm.filtered.length }}</strong>
+        entrées
+
+      </div>
+
+      <nav class="pagination-nav">
+
+        <ul class="pagination">
+
+          <li
+            class="page-item"
+            [class.disabled]="vm.currentPage === 1">
+
+            <button
+              class="page-link-btn"
+              (click)="prevPage()"
+              [disabled]="vm.currentPage === 1">
+
+              <i class="bi bi-chevron-left"></i>
+
+            </button>
+
+          </li>
+
+          <li
+            class="page-item"
+            *ngFor="let page of vm.pages">
+
+            <button
+              class="page-link-btn"
+              [class.active]="page === vm.currentPage"
+              (click)="goToPage(page, vm.totalPages)">
+
+              {{ page }}
+
+            </button>
+
+          </li>
+
+          <li
+            class="page-item"
+            [class.disabled]="vm.currentPage === vm.totalPages">
+
+            <button
+              class="page-link-btn"
+              (click)="nextPage(vm.totalPages)"
+              [disabled]="vm.currentPage === vm.totalPages">
+
+              <i class="bi bi-chevron-right"></i>
+
+            </button>
+
+          </li>
+
+        </ul>
+
+      </nav>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div
+  class="modal-backdrop"
+  *ngIf="showAddModal">
+
+  <div class="modal-card">
+
+    <div class="modal-header">
+
+      <h3>
+
+        {{ editing ? 'Modifier le Fonctionnaire' : 'Ajouter un Fonctionnaire' }}
+
+      </h3>
+
+      <button
+        type="button"
+        class="btn-close"
+        (click)="closeAddModal()">
+      </button>
+
+    </div>
+
+    <form
+      [formGroup]="employeeForm"
+      (ngSubmit)="saveEmployee()">
+
+      <div class="modal-body">
+
+        <div class="row">
+
+          <div class="col-md-6">
+
+            <label class="form-label">
+
+              Prénom
+
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              formControlName="firstName">
+
+          </div>
+
+          <div class="col-md-6">
+
+            <label class="form-label">
+
+              Nom
+
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              formControlName="lastName">
+
+          </div>
+
+        </div>
+
+        <div class="mt-3">
+
+          <label class="form-label">
+
+            Email
+
+          </label>
+
+          <input
+            type="email"
+            class="form-control"
+            formControlName="email">
+
+        </div>
+
+        <div class="mt-3">
+
+          <label class="form-label">
+
+            Téléphone
+
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            formControlName="phone">
+
+        </div>
+
+        <div class="row mt-3">
+
+          <div class="col-md-6">
+
+            <label class="form-label">
+
+              Date d'Embauche
+
+            </label>
+
+            <input
+              type="date"
+              class="form-control"
+              formControlName="hireDate">
+
+          </div>
+
+          <div class="col-md-6">
+
+            <label class="form-label">
+
+              Grade
+
+            </label>
+
+            <select
+              class="form-select"
+              formControlName="gradeId">
+
+              <option value="">
+
+                Sélectionnez un Grade
+
+              </option>
+
+              <option
+                *ngFor="let g of grades$ | async"
+                [value]="g.id">
+
+                {{ g.name }}
+
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+        <div class="row mt-3">
+
+          <div class="col-md-6">
+
+            <label class="form-label">
+
+              Division
+
+            </label>
+
+            <select
+              class="form-select"
+              formControlName="departmentId">
+
+              <option value="">
+
+                Sélectionnez une Division
+
+              </option>
+
+              <option
+                *ngFor="let d of departments$ | async"
+                [value]="d.id">
+
+                {{ d.name }}
+
+              </option>
+
+            </select>
+
+          </div>
+
+          <div class="col-md-6">
+
+            <label class="form-label">
+
+              Poste
+
+            </label>
+
+            <select
+              class="form-select"
+              formControlName="positionId">
+
+              <option value="">
+
+                Sélectionnez un Poste
+
+              </option>
+
+              <option
+                *ngFor="let p of positions$ | async"
+                [value]="p.id">
+
+                {{ p.title }}
+
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeAddModal()">
+
+          Annuler
+
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="employeeForm.invalid">
+
+          {{ editing ? 'Mettre à jour le Fonctionnaire' : 'Enregistrer le Fonctionnaire' }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<div
+  class="modal-backdrop"
+  *ngIf="showDeleteModal">
+
+  <div class="modal-card">
+
+    <div class="modal-header">
+
+      <h3 class="text-danger">
+
+        Supprimer le Fonctionnaire
+
+      </h3>
+
+    </div>
+
+    <div class="modal-body">
+
+      <p>
+
+        Êtes-vous sûr de vouloir supprimer
+
+        <strong>
+
+          {{ employeeToDelete?.firstName }}
+          {{ employeeToDelete?.lastName }}
+
+        </strong>
+
+        ?
+
+      </p>
+
+      <p class="text-muted mb-0">
+
+        Cette action est irréversible.
+
+      </p>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <button
+        class="btn btn-secondary"
+        (click)="cancelDelete()">
+
+        Annuler
+
+      </button>
+
+      <button
+        class="btn btn-danger"
+        (click)="confirmDelete()">
+
+        Supprimer
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

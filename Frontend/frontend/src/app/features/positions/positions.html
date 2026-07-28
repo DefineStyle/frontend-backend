@@ -1,0 +1,324 @@
+<div class="positions-page">
+
+  <div class="page-header">
+
+    <div>
+      <h2>Postes</h2>
+      <p>Gérer tous les postes</p>
+    </div>
+
+    <button
+      class="btn btn-primary"
+      (click)="openAddModal()">
+
+      <i class="bi bi-plus-lg"></i>
+      Ajouter un Poste
+
+    </button>
+
+  </div>
+
+  <div
+    class="table-card"
+    *ngIf="vm$ | async as vm">
+
+    <div class="table-header">
+
+      <div class="search-container">
+
+        <i class="bi bi-search"></i>
+
+        <input
+          class="form-control search-box"
+          type="text"
+          placeholder="Rechercher un poste..."
+          [value]="searchTerm$.value"
+          (input)="onSearch($event)">
+
+      </div>
+
+    </div>
+
+    <table class="table table-hover align-middle">
+
+      <thead>
+
+        <tr>
+
+          <th>#</th>
+          <th>Titre</th>
+          <th>Fonctionnaires</th>
+          <th class="text-center">Actions</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let position of vm.paginated">
+
+          <td>{{ position.id }}</td>
+
+          <td>{{ position.title }}</td>
+
+          <td>{{ position.employeeCount }}</td>
+
+          <td>
+
+            <div class="d-flex justify-content-end gap-2">
+
+              <button
+                class="action-btn btn-edit"
+                (click)="editPosition(position)">
+
+                <i class="bi bi-pencil"></i>
+
+              </button>
+
+              <button
+                class="action-btn btn-delete"
+                (click)="deletePosition(position)">
+
+                <i class="bi bi-trash"></i>
+
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+        <tr *ngIf="vm.filtered.length === 0">
+
+          <td
+            colspan="4"
+            class="text-center text-muted py-4">
+
+            Aucun poste trouvé.
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+    <div
+      class="table-footer"
+      *ngIf="vm.filtered.length > 0">
+
+      <div class="entries-info">
+
+        Affichage de
+        <strong>{{ vm.startEntry }}</strong>
+        à
+        <strong>{{ vm.endEntry }}</strong>
+        sur
+        <strong>{{ vm.filtered.length }}</strong>
+        entrées
+
+      </div>
+
+      <nav class="pagination-nav">
+
+        <ul class="pagination">
+
+          <li
+            class="page-item"
+            [class.disabled]="vm.currentPage === 1">
+
+            <button
+              class="page-link-btn"
+              (click)="prevPage()"
+              [disabled]="vm.currentPage === 1">
+
+              <i class="bi bi-chevron-left"></i>
+
+            </button>
+
+          </li>
+
+          <li
+            class="page-item"
+            *ngFor="let page of vm.pages">
+
+            <button
+              class="page-link-btn"
+              [class.active]="page === vm.currentPage"
+              (click)="goToPage(page, vm.totalPages)">
+
+              {{ page }}
+
+            </button>
+
+          </li>
+
+          <li
+            class="page-item"
+            [class.disabled]="vm.currentPage === vm.totalPages">
+
+            <button
+              class="page-link-btn"
+              (click)="nextPage(vm.totalPages)"
+              [disabled]="vm.currentPage === vm.totalPages">
+
+              <i class="bi bi-chevron-right"></i>
+
+            </button>
+
+          </li>
+
+        </ul>
+
+      </nav>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- AJOUT / MODIFICATION POSTE -->
+
+<div
+  class="modal-backdrop"
+  *ngIf="showAddModal">
+
+  <div class="modal-card">
+
+    <div class="modal-header">
+
+      <h3>
+
+        {{ editing ? 'Modifier le Poste' : 'Ajouter un Poste' }}
+
+      </h3>
+
+      <button
+        type="button"
+        class="btn-close"
+        (click)="closeAddModal()">
+      </button>
+
+    </div>
+
+    <form
+      [formGroup]="positionForm"
+      (ngSubmit)="savePosition()">
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+
+          <label class="form-label">
+
+            Titre du Poste
+
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Saisissez le titre du poste"
+            formControlName="title">
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeAddModal()">
+
+          Annuler
+
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="positionForm.invalid">
+
+          {{ editing ? 'Mettre à jour le Poste' : 'Enregistrer le Poste' }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!-- CONFIRMATION DE SUPPRESSION -->
+
+<div
+  class="modal-backdrop"
+  *ngIf="showDeleteModal">
+
+  <div class="modal-card">
+
+    <div class="modal-header">
+
+      <h3 class="text-danger">
+
+        Supprimer le Poste
+
+      </h3>
+
+    </div>
+
+    <div class="modal-body">
+
+      <p>
+
+        Êtes-vous sûr de vouloir supprimer
+
+        <strong>
+
+          {{ positionToDelete?.title }}
+
+        </strong>
+
+        ?
+
+      </p>
+
+      <p class="text-muted mb-0">
+
+        Les fonctionnaires assignés à ce poste peuvent empêcher la suppression.
+
+      </p>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <button
+        class="btn btn-secondary"
+        (click)="cancelDelete()">
+
+        Annuler
+
+      </button>
+
+      <button
+        class="btn btn-danger"
+        (click)="confirmDelete()">
+
+        Supprimer
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

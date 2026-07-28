@@ -1,0 +1,149 @@
+.login-container{
+
+    height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#eef4fb;
+
+}
+
+.login-card{
+
+    width:max-content;
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:45px;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.08);
+
+}
+
+.logo{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-bottom:20px;
+
+}
+
+.logo i{
+
+    font-size:60px;
+
+    color:#2d6cdf;
+
+}
+
+h2{
+
+    text-align:center;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+p{
+
+    text-align:center;
+
+    color:gray;
+
+    margin-bottom:35px;
+
+}
+
+label{
+
+    font-weight:600;
+
+    margin-bottom:6px;
+
+}
+
+.form-control{
+
+    height:48px;
+
+    border-radius:10px;
+
+}
+
+.btn{
+
+    height:48px;
+
+    border-radius:10px;
+
+    font-weight:600;
+
+}
+
+.modal-backdrop{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.5);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+.modal-card{
+
+    width:400px;
+
+    background:white;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+
+}
+
+.modal-header{
+
+    padding:18px 24px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.modal-body{
+
+    padding:24px;
+
+}
+
+.modal-footer{
+
+    padding:18px 24px;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    border-top:1px solid #eee;
+
+}

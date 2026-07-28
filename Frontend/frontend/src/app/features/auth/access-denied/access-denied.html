@@ -1,0 +1,29 @@
+<div class="denied-container">
+    <div class="denied-card">
+        <div class="icon-badge">
+            <i class="bi bi-shield-lock-fill"></i>
+        </div>
+
+        <div class="content">
+            <span class="error-code">Erreur 403</span>
+            <h2>Accès Refusé</h2>
+            <p>
+                Attendez ! Votre compte ne dispose pas des autorisations ou du niveau d'habilitation nécessaire pour consulter cette page. Si vous pensez qu'il s'agit d'une erreur, veuillez contacter votre administrateur système.
+            </p>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" routerLink="/">
+                <i class="bi bi-house-door-fill"></i>
+                <span>Retour à l'Accueil</span>
+            </button>
+            
+            
+            <button class="btn btn-secondary" (click)="logoutAndSwitch()">
+                <i class="bi bi-box-arrow-left"></i>
+                <span>Changer de Compte</span>
+            </button>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,247 @@
+<nav class="navbar">
+
+
+    <div class="left">
+
+        <h3>
+
+
+
+        </h3>
+
+    </div>
+
+
+
+
+    <div class="right">
+
+
+        <button
+            *ngIf="(user$ | async)?.role === 'EMPLOYEE'"
+            class="icon-btn"
+            (click)="openNotifications()">
+
+
+
+            <i class="bi bi-bell"></i>
+
+
+
+            <span
+                class="notification-dot"
+                *ngIf="unreadNotification$ | async">
+            </span>
+
+
+
+        </button>
+
+
+
+
+
+
+        <div
+            class="profile-container"
+            *ngIf="user$ | async as user">
+
+
+
+            <div
+                class="profile"
+                (click)="toggleDropdown($event)">
+
+
+
+                <div class="avatar">
+
+                    {{ user.username.charAt(0).toUpperCase() }}
+
+                </div>
+
+
+
+
+                <div class="profile-info">
+
+
+                    <strong>
+                        {{ user.username }}
+                    </strong>
+
+
+
+                    <small>
+                        {{ user.role }}
+                    </small>
+
+
+                </div>
+
+
+
+
+                <i
+                    class="bi bi-chevron-down dropdown-arrow"
+                    [class.rotated]="isDropdownOpen">
+                </i>
+
+
+
+            </div>
+
+
+
+
+
+
+            <div
+                class="profile-dropdown"
+                *ngIf="isDropdownOpen">
+
+
+
+                <button
+                    class="dropdown-item logout-btn"
+                    (click)="logout()">
+
+
+
+                    <i class="bi bi-box-arrow-right"></i>
+
+
+                    <span>
+                        Déconnexion
+                    </span>
+
+
+
+                </button>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+</nav>
+
+
+
+
+
+
+
+<!-- NOTIFICATION MODAL -->
+
+
+<div
+    class="notification-backdrop"
+    *ngIf="showNotificationModal">
+
+
+
+    <div class="notification-modal">
+
+
+
+        <div class="notification-header">
+
+
+            <h3>
+                Notifications
+            </h3>
+
+
+
+            <button
+                class="btn-close"
+                (click)="closeNotifications()">
+
+            </button>
+
+
+
+        </div>
+
+
+
+
+
+
+        <div class="notification-body">
+
+
+
+            <div
+                class="notification-item"
+                *ngFor="let notification of notifications$ | async">
+
+
+
+                <i class="bi bi-megaphone"></i>
+
+
+
+
+                <div>
+
+
+
+                    <strong>
+                        {{ notification.title }}
+                    </strong>
+
+
+
+
+                    <p>
+                        {{ notification.message }}
+                    </p>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+            <div
+                class="empty-notification"
+                *ngIf="(notifications$ | async)?.length === 0">
+
+
+
+                Aucune nouvelle notification.
+
+
+
+            </div>
+
+
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>

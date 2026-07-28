@@ -1,0 +1,79 @@
+<div class="login-container">
+
+  <div class="login-card">
+
+    <div class="logo">
+      <i class="bi bi-people-fill"></i>
+    </div>
+
+    <h2>Système de Gestion des Fonctionnaires</h2>
+
+    <p>Connectez-vous à votre compte</p>
+
+    <form (ngSubmit)="login()">
+
+      <div class="mb-3">
+
+        <label>Nom d'utilisateur</label>
+
+        <input
+          class="form-control"
+          type="text"
+          name="username"
+          [(ngModel)]="username"
+          placeholder="Saisissez le nom d'utilisateur (par défaut, votre gmail)"
+          required>
+
+      </div>
+
+      <div class="mb-4">
+
+        <label>Mot de passe</label>
+
+        <input
+          class="form-control"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Saisissez le mot de passe (par défaut : TempPassword123!)"
+          required>
+
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary w-100">
+        Connexion
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+<div
+  class="modal-backdrop"
+  *ngIf="showErrorModal()">
+
+  <div class="modal-card">
+
+    <div class="modal-header">
+      <h3 class="text-danger">Échec de la Connexion</h3>
+    </div>
+
+    <div class="modal-body">
+      <p>Nom d'utilisateur ou mot de passe incorrect.</p>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        class="btn btn-primary"
+        (click)="closeErrorModal()">
+        OK
+      </button>
+    </div>
+
+  </div>
+
+</div>

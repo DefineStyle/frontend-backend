@@ -1,0 +1,233 @@
+<div class="home-page">
+
+  <div class="page-header">
+
+    <div>
+
+      <h2>Accueil</h2>
+
+      <p>Annonces de l'entreprise</p>
+
+    </div>
+
+    <button
+    *ngIf="(isAdmin$ | async) || (isHr$ | async)"
+      class="btn btn-primary"
+      (click)="openAddModal()">
+
+      <i class="bi bi-plus-lg"></i>
+
+      Nouvelle Annonce
+
+    </button>
+
+  </div>
+
+  <div
+    class="announcement-list"
+    *ngIf="announcements$ | async as announcements">
+
+    <div
+      class="announcement-card"
+      *ngFor="let announcement of announcements">
+
+      <div class="announcement-header">
+
+        <div>
+
+          <h3>{{ announcement.title }}</h3>
+
+          <small>
+
+            {{ announcement.createdAt | date:'medium' }}
+
+          </small>
+
+        </div>
+
+        <div class="actions"
+            *ngIf="(isAdmin$ | async) || (isHr$ | async)">
+
+          <button
+            class="action-btn btn-edit"
+            (click)="editAnnouncement(announcement)">
+
+            <i class="bi bi-pencil"></i>
+
+          </button>
+
+          <button
+            class="action-btn btn-delete"
+            (click)="deleteAnnouncement(announcement)">
+
+            <i class="bi bi-trash"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <p class="announcement-message">
+
+        {{ announcement.message }}
+
+      </p>
+
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="announcements.length === 0">
+
+      Aucune annonce pour le moment.
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ADD / EDIT MODAL -->
+
+<div
+
+  class="modal-backdrop"
+  *ngIf="showModal">
+
+  <div class="modal-card">
+
+    <div class="modal-header">
+
+      <h3>
+
+        {{ editing ? 'Modifier l\'Annonce' : 'Nouvelle Annonce' }}
+
+      </h3>
+
+      <button
+        class="btn-close"
+        (click)="closeModal()">
+      </button>
+
+    </div>
+
+    <form
+      [formGroup]="announcementForm"
+      (ngSubmit)="saveAnnouncement()">
+
+      <div class="modal-body">
+
+        <label class="form-label">
+
+          Titre
+
+        </label>
+
+        <input
+          type="text"
+          class="form-control"
+          formControlName="title">
+
+        <label
+          class="form-label mt-3">
+
+          Message
+
+        </label>
+
+        <textarea
+          rows="6"
+          class="form-control"
+          formControlName="message">
+        </textarea>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeModal()">
+
+          Annuler
+
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="announcementForm.invalid">
+
+          {{ editing ? 'Mettre à jour' : 'Publier' }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!-- DELETE MODAL -->
+
+<div
+  class="modal-backdrop"
+  *ngIf="showDeleteModal">
+
+  <div class="modal-card">
+
+    <div class="modal-header">
+
+      <h3 class="text-danger">
+
+        Supprimer l'Annonce
+
+      </h3>
+
+    </div>
+
+    <div class="modal-body">
+
+      <p>
+
+        Supprimer
+
+        <strong>
+
+          {{ announcementToDelete?.title }}
+
+        </strong>
+
+        ?
+
+      </p>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <button
+        class="btn btn-secondary"
+        (click)="cancelDelete()">
+
+        Annuler
+
+      </button>
+
+      <button
+        class="btn btn-danger"
+        (click)="confirmDelete()">
+
+        Supprimer
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,488 @@
+.navbar {
+
+    height: 80px;
+
+    background: white;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 0 35px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,.05);
+
+}
+
+
+.left h3 {
+
+    margin: 0;
+
+    font-weight: 700;
+
+}
+
+
+.dashboard-title {
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    color: inherit;
+
+    margin: 0;
+
+}
+
+
+.dashboard-title:hover {
+
+    color: #0d6efd;
+
+}
+
+
+
+/* RIGHT SIDE */
+
+.right {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+}
+
+
+
+/* ICON BUTTON */
+
+.icon-btn {
+
+    width: 45px;
+
+    height: 45px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #f4f6fb;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+    position: relative;
+
+}
+
+
+.icon-btn:hover {
+
+    background: #2d6cdf;
+
+    color: white;
+
+}
+
+
+
+/* NOTIFICATION DOT */
+
+.notification-dot {
+
+    position: absolute;
+
+    top: 4px;
+
+    right: 5px;
+
+    width: 10px;
+
+    height: 10px;
+
+    background: red;
+
+    border-radius: 50%;
+
+}
+
+
+
+/* PROFILE */
+
+.profile-container {
+
+    position: relative;
+
+}
+
+
+
+.profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 6px 12px;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    transition: background-color .2s ease;
+
+}
+
+
+
+.profile:hover {
+
+    background-color: #f3f4f6;
+
+}
+
+
+
+.avatar {
+
+    width: 45px;
+
+    height: 45px;
+
+    border-radius: 50%;
+
+    background: #2d6cdf;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: bold;
+
+}
+
+
+
+.profile small {
+
+    display: block;
+
+    color: gray;
+
+}
+
+
+
+.dropdown-arrow {
+
+    font-size: 12px;
+
+    color: #9ca3af;
+
+    transition: transform .2s ease;
+
+}
+
+
+
+.dropdown-arrow.rotated {
+
+    transform: rotate(180deg);
+
+}
+
+
+
+/* PROFILE DROPDOWN */
+
+.profile-dropdown {
+
+    position: absolute;
+
+    top: calc(100% + 8px);
+
+    right: 0;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,.1);
+
+    min-width: 160px;
+
+    overflow: hidden;
+
+    z-index: 1100;
+
+    animation: slideDown .15s ease;
+
+}
+
+
+
+.dropdown-item {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px 16px;
+
+    border: none;
+
+    background: none;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+}
+
+
+
+.logout-btn {
+
+    color: #dc2626;
+
+}
+
+
+
+.logout-btn:hover {
+
+    background: #fef2f2;
+
+}
+
+
+
+@keyframes slideDown {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-8px);
+
+    }
+
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+
+
+
+/* ========================= */
+/* NOTIFICATION MODAL */
+/* ========================= */
+
+
+.notification-backdrop {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.45);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 9999;
+
+}
+
+
+
+.notification-modal {
+
+    width: 400px;
+
+    max-width: 90vw;
+
+    max-height: 80vh;
+
+    background: white;
+
+    border-radius: 15px;
+
+    padding: 20px;
+
+    overflow: hidden;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,.2);
+
+}
+
+
+
+/* HEADER */
+
+.notification-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom: 1px solid #ddd;
+
+    padding-bottom: 10px;
+
+}
+
+
+
+.notification-header h3 {
+
+    margin: 0;
+
+}
+
+
+
+/* BODY */
+
+.notification-body {
+
+    padding-top: 20px;
+
+    max-height: 60vh;
+
+    overflow-y: auto;
+
+}
+
+
+
+
+
+/* SINGLE NOTIFICATION */
+
+.notification-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 15px;
+
+    padding: 15px;
+
+    background: #f5f5f5;
+
+    border-radius: 10px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+}
+
+
+
+.notification-item i {
+
+    font-size: 25px;
+
+    flex-shrink: 0;
+
+}
+
+
+
+.notification-item > div {
+
+    flex: 1;
+
+    min-width: 0;
+
+    overflow: hidden;
+
+}
+
+
+
+.notification-item strong {
+
+    display: block;
+
+    font-size: 16px;
+
+    line-height: 1.4;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+
+}
+
+
+
+.notification-item p {
+
+    margin: 5px 0 0;
+
+    color: #666;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+
+}
+
+
+
+
+
+.empty-notification {
+
+    text-align: center;
+    
+    place-items: center;
+
+
+    margin: 50px;
+
+    color: gray;
+
+}

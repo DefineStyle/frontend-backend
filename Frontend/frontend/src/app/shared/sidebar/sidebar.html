@@ -1,0 +1,90 @@
+<div class="sidebar" [class.collapsed]="isCollapsed">
+    <div class="sidebar-header">
+        <div class="logo" *ngIf="!isCollapsed">
+            <div class="logo-icon">👨🏻‍💻</div>
+            <div>
+                <h3>EM  </h3>
+                <span>Gestion des Fonctionnaires</span>
+            </div>
+        </div>
+        
+        <button class="toggle-btn" (click)="toggleSidebar()">
+            <i class="bi bi-list"></i>
+        </button>
+    </div>
+
+    <nav>
+        <!-- 🏠 Home Link -->
+        <a
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }">
+            <i class="bi bi-house-door-fill"></i>
+            <span class="menu-text">Accueil</span>
+        </a>
+
+        <!-- 📊 Dashboard Link -->
+        <a
+            *ngIf="(isAdmin$ | async) || (isHr$ | async)"
+            routerLink="/dashboard"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }">
+            <i class="bi bi-grid-fill"></i>
+            <span class="menu-text">Tableau de Bord</span>
+        </a>
+
+        <!-- 👥 Employees Link -->
+        <a
+            *ngIf="(isAdmin$ | async) || (isHr$ | async)"
+            routerLink="/employees"
+            routerLinkActive="active">
+            <i class="bi bi-people-fill"></i>
+            <span class="menu-text">Fonctionnaires</span>
+        </a>
+
+        <!-- 🏢 Departments Link -->
+        <a
+            *ngIf="(isAdmin$ | async) || (isHr$ | async)"
+            routerLink="/departments"
+            routerLinkActive="active">
+            <i class="bi bi-building"></i>
+            <span class="menu-text">Divisions</span>
+        </a>
+
+        <!-- 💼 Positions Link -->
+        <a
+            *ngIf="(isAdmin$ | async) || (isHr$ | async)"
+            routerLink="/positions"
+            routerLinkActive="active">
+            <i class="bi bi-briefcase-fill"></i>
+            <span class="menu-text">Postes</span>
+        </a>
+
+        <!-- 🎖️ Grades Link -->
+        <a
+            *ngIf="(isAdmin$ | async) || (isHr$ | async)"
+            routerLink="/grades"
+            routerLinkActive="active">
+            <i class="bi bi-award-fill"></i>
+            <span class="menu-text">Grades</span>
+        </a>
+
+        <!-- 👤 Users Link -->
+        <a
+            *ngIf="isAdmin$ | async"
+            routerLink="/users"
+            routerLinkActive="active">
+            <i class="bi bi-person-fill"></i>
+            <span class="menu-text">Utilisateurs</span>
+        </a>
+
+        <!-- 👤 My Profile Link -->
+        <a
+            *ngIf="(isEmployee$ | async) || (isAdmin$ | async) || (isHr$ | async)"
+            routerLink="/profile"
+            routerLinkActive="active">
+            <i class="bi bi-person-circle"></i>
+            <span class="menu-text">Mon Profil</span>
+        </a>
+    </nav>
+</div>

@@ -1,0 +1,148 @@
+<div class="container mt-4" *ngIf="currentUser; else loadingOrError">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      
+      <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="successMessage">
+        <i class="bi bi-check-circle-fill me-2"></i> {{ successMessage }}
+      </div>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorMessage">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ errorMessage }}
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between p-3">
+          <h4 class="mb-0">
+            <i class="bi bi-person-circle me-2"></i> Mon Profil
+          </h4>
+          <span class="badge bg-light text-primary fw-bold">{{ currentUser.role }}</span>
+        </div>
+        
+        <div class="card-body p-4">
+          
+          <h5 class="text-muted mb-3 border-bottom pb-2">Informations du Compte</h5>
+          
+          <div *ngIf="!showEditForm">
+            <div class="row mb-3">
+              <div class="col-sm-4 text-secondary fw-semibold">Nom d'utilisateur :</div>
+              <div class="col-sm-8 text-dark fw-bold">{{ currentUser.username }}</div>
+            </div>
+
+            <div class="mb-3">
+              <button class="btn btn-outline-secondary btn-sm" (click)="enableEditForm()">
+                <i class="bi bi-pencil-square me-1"></i> Modifier les Identifiants
+              </button>
+            </div>
+          </div>
+
+          <div class="card bg-light p-3 border-0 mb-4" *ngIf="showEditForm">
+            <h6 class="mb-3 text-dark fw-bold">Mettre à jour les Identifiants</h6>
+            
+            <div class="mb-3">
+              <label class="form-label text-secondary fw-semibold">Nom d'utilisateur</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                [value]="editUsername" 
+                name="editUsername"
+                disabled
+                readonly
+              />
+              <div class="form-text">Le nom d'utilisateur ne peut pas être modifié.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label text-secondary fw-semibold">Nouveau Mot de Passe</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                placeholder="Saisissez votre nouveau mot de passe" 
+                [(ngModel)]="newPassword" 
+                name="newPassword"
+              />
+            </div>
+
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary btn-sm" (click)="onUpdateCredentials()">Enregistrer les Modifications</button>
+              <button class="btn btn-light btn-sm" (click)="cancelEdit()">Annuler</button>
+            </div>
+          </div>
+
+          <div class="row mb-4 border-top pt-3">
+            <div class="col-sm-4 text-secondary fw-semibold">Email de Contact :</div>
+            <div class="col-sm-8 text-dark text-decoration-underline">{{ currentUser.employee?.email || 'Aucun email enregistré' }}</div>
+          </div>
+
+          <div *ngIf="currentUser.employee; else noEmployeeLinked">
+            <h5 class="text-muted mb-3 border-bottom pb-2">Profil Professionnel</h5>
+            
+            <div class="row mb-3">
+              <div class="col-sm-4 text-secondary fw-semibold">Nom Complet :</div>
+              <div class="col-sm-8 text-dark fw-bold">
+                {{ currentUser.employee.firstName }} {{ currentUser.employee.lastName }}
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-sm-4 text-secondary fw-semibold">Téléphone :</div>
+              <div class="col-sm-8 text-dark">{{ currentUser.employee.phone || 'N/D' }}</div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-sm-4 text-secondary fw-semibold">Date d'Embauche :</div>
+              <div class="col-sm-8 text-dark">{{ currentUser.employee.hireDate | date:'longDate' }}</div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-sm-4 text-secondary fw-semibold">Division :</div>
+              <div class="col-sm-8">
+                <span class="badge bg-info text-dark fw-medium">
+                  {{ currentUser.employee.department?.name || 'Non assignée' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-sm-4 text-secondary fw-semibold">Poste :</div>
+              <div class="col-sm-8">
+                <span class="badge bg-warning text-dark fw-medium">
+                  {{ currentUser.employee.position?.title || 'Non assigné' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-sm-4 text-secondary fw-semibold">Grade :</div>
+              <div class="col-sm-8">
+                <span class="badge bg-secondary fw-medium">
+                  {{ currentUser.employee.grade?.name || 'Non assigné' }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #noEmployeeLinked>
+            <div class="alert alert-info border-0 mt-3 mb-0">
+              <i class="bi bi-info-circle-fill me-2"></i> Ceci est un compte d'administration système.
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingOrError>
+  <div class="container mt-5 text-center">
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      <h4><i class="bi bi-exclamation-triangle-fill"></i> Erreur</h4>
+      <p class="mb-0">{{ errorMessage }}</p>
+    </div>
+    <div *ngIf="!errorMessage">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement du Profil...</span>
+      </div>
+      <p class="mt-2 text-secondary">Récupération des détails de votre profil...</p>
+    </div>
+  </div>
+</ng-template>
